@@ -2,9 +2,6 @@ name: FUASK Website Monitor
 
 on:
   schedule:
-    # GitHub's scheduler is best-effort, not exact — expect occasional
-    # delays of a few extra minutes, especially during peak load on
-    # GitHub's side. Fine for "is the site down", not true real-time.
     - cron: "*/5 * * * *"
   workflow_dispatch: {}
 
@@ -26,12 +23,20 @@ jobs:
 
       - name: Run monitor
         env:
-          MONITOR_URL: "https://www.fuask.edu.ng/"
+          # Add or remove URLs from this comma-separated list anytime
+          MONITOR_URLS: >-
+            https://www.fuask.edu.ng/,
+            https://www.fuask.edu.ng/admissions,
+            https://www.fuask.edu.ng/about,
+            https://www.fuask.edu.ng/academics,
+            https://www.fuask.edu.ng/contact,
+            https://www.fuask.edu.ng/student-portal,
+            https://www.fuask.edu.ng/news,
+            https://www.fuask.edu.ng/library
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           TIMEOUT_SECONDS: "10"
           LATENCY_THRESHOLD_MS: "3000"
-          FAILURE_THRESHOLD: "1"
           HEARTBEAT_INTERVAL_MINUTES: "120"
           CHECK_RETRIES: "1"
           CHECK_RETRY_DELAY_SECONDS: "3"
