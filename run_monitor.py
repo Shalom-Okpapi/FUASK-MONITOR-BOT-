@@ -1,4 +1,3 @@
-"""Entry point for one multi-page monitoring cycle."""
 import sys
 from datetime import datetime, timedelta, timezone
 from typing import Dict
@@ -19,7 +18,8 @@ def _page_label(url: str) -> str:
     path = url.rstrip("/").split("/")[-1]
     if not path or path.startswith("www."):
         return "Homepage"
-    return path.replace("-", " ").replace("_", " ").title()
+    label = path.replace(".php", "").replace("-", " ").replace("_", " ")
+    return label.title()
 
 
 def _error_reason(result: CheckResult) -> str:
@@ -166,15 +166,17 @@ def build_heartbeat(settings, results: Dict[str, CheckResult]) -> str:
         f"{page_summary}\n\n"
         f"{speed_line}"
         f"🕐 *Checked at:* {_now_wat()}\n\n"
-        "No action needed. This is your routine 2-hour check-in from the monitoring bot. 🤖"
+        "No action needed. This is your daily 9 AM check-in from the monitoring bot. 🤖"
     )
 
 
-def due_for_heartbeat(last_heartbeat_at, now: datetime, interval_minutes: float) -> bool:
+def due_for_heartbeat(last_heartbeat_at, now_wat: datetime, target_hour: int) -> bool:
+    if now_wat.hour < target_hour:
+        return False
     if last_heartbeat_at is None:
         return True
-    last = datetime.fromisoformat(last_heartbeat_at)
-    return (now - last) >= timedelta(minutes=interval_minutes)
+    last = datetime.fromisoformat(last_heartbeat_at).astimezone(WAT)
+    return last.date() < now_wat.date()
 
 
 def main() -> int:
@@ -199,10 +201,10 @@ def main() -> int:
     alerts, new_state = evaluate(settings, results, state)
 
     heartbeat_text = None
-    now = datetime.now(timezone.utc)
-    if due_for_heartbeat(state.last_heartbeat_at, now, settings.heartbeat_interval_minutes):
+    now_wat = datetime.now(WAT)
+    if due_for_heartbeat(state.last_heartbeat_at, now_wat, settings.heartbeat_hour_wat):
         heartbeat_text = build_heartbeat(settings, results)
-        new_state.last_heartbeat_at = now.isoformat()
+        new_state.last_heartbeat_at = datetime.now(timezone.utc).isoformat()
     else:
         new_state.last_heartbeat_at = state.last_heartbeat_at
 
