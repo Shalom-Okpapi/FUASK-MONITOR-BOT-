@@ -8,6 +8,8 @@
     "https://www.fuask.edu.ng/news",
     "https://www.fuask.edu.ng/library"
   ],
-  "pages_slow_alerted": [],
+  "pages_slow_alerted": [
+    "https://www.fuask.edu.ng/"
+  ],
   "last_heartbeat_at": "2026-06-25T09:52:24.053969+00:00"
 }
