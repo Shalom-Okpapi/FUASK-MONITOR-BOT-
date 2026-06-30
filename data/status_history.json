@@ -6,10 +6,11 @@
     "https://www.fuask.edu.ng/contact",
     "https://www.fuask.edu.ng/student-portal",
     "https://www.fuask.edu.ng/news",
-    "https://www.fuask.edu.ng/library"
+    "https://www.fuask.edu.ng/library",
+    "https://www.fuask.edu.ng/",
+    "https://www.fuask.edu.ng/about-us.php",
+    "https://www.fuask.edu.ng/contact-us.php"
   ],
-  "pages_slow_alerted": [
-    "https://www.fuask.edu.ng/"
-  ],
+  "pages_slow_alerted": [],
   "last_heartbeat_at": "2026-06-30T08:48:54.678867+00:00"
 }
