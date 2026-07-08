@@ -6,8 +6,6 @@
     "https://www.fuask.edu.ng/student-portal",
     "https://www.fuask.edu.ng/library"
   ],
-  "pages_slow_alerted": [
-    "https://www.fuask.edu.ng/"
-  ],
+  "pages_slow_alerted": [],
   "last_heartbeat_at": "2026-07-08T08:46:59.023030+00:00"
 }
